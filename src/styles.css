@@ -37,7 +37,13 @@
     white-space: revert;
   }
 
+  :root {
+    --ff-default: 'TF2 Build', sans-serif;
+                                                
+  }
 
   body {
     background-color: #9d312f;
+    font-family: var(--ff-default);
   }
+

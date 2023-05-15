@@ -5,7 +5,7 @@ const Mercs = (props) => {
         <div className="mercs">
             {props.array.map((item) => {
                  
-            return  <div key={item.id}>
+            return  <div id={item.id} onClick={props.onclick} key={item.id}>
                         <img src={item.src} alt="" />
                          <h1>{item.id}</h1>
                     </div>

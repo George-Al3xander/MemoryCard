@@ -11,6 +11,9 @@ import src_spy from "./assets/img_spy.jpg"
 import Mercs from "./components/Mercs";
 
 const App = () => {
+    const [scoreCurrent, setScoreCurrent] = useState(0);
+    const [isLost, setIsLost] = useState(false);
+    const [scoreBest, setScoreBest] = useState(0);
     const [clicked, setClicked] = useState([]);
     const [array,setArray] = useState([
         {
@@ -52,9 +55,48 @@ const App = () => {
 
     ]);
 
+    const shuffle = () => {        
+        let tempArray = [...array];
+        let currentIndex = tempArray.length, randomIndex;
+        while(currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            [tempArray[currentIndex], tempArray[randomIndex]] = [
+                tempArray[randomIndex], tempArray[currentIndex]];
+        }
+
+        setArray(tempArray);
+    }
+
+    const checkLoss = (value) => {
+        let cond = clicked.every((item) => {
+            return item == value
+        })
+
+        return cond;
+
+    }
+
+    const click = (e) => {
+        let val = e.target.parentElement.id;        
+
+        let tempArray = [...clicked];
+        tempArray.push(val);
+        setClicked(tempArray);       
+        shuffle();
+        let cond = checkLoss(val);
+        if(cond == false) {
+            console.log("Win");
+        } else {
+            console.log("Loose");
+        }
+        console.lo
+    }
+
     return(
         <div>
-            <Mercs array={array}/>
+            <Mercs onclick={click} array={array}/>
         </div>
     )
 }
