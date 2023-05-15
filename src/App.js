@@ -16,6 +16,7 @@ const App = () => {
     const [scoreBest, setScoreBest] = useState(0);
     const [isLost, setIsLost] = useState(false);
     const [clicked, setClicked] = useState([]);
+    
     const [array,setArray] = useState([
         {
             id: "demo",
@@ -66,59 +67,41 @@ const App = () => {
             [tempArray[currentIndex], tempArray[randomIndex]] = [
                 tempArray[randomIndex], tempArray[currentIndex]];
         }
-
         setArray(tempArray);
     }
 
-    const checkLoss = (value) => {
-        let cond = false;
-        for(let item of clicked) {
-            if(item == value) {
-                setIsLost(true);
-                cond = true;
-            }
-        }
-        
-        return cond;
-    }
+    const checkLoss = () => {
+        let cond = new Set(clicked).size !== clicked.length;
+        setIsLost(cond);
 
-    const checkPlay = (value) => {
-        console.log(clicked)
-        let cond = true;
-        for(let item of clicked) {
-            if(item != value) {
-                setIsLost(false);
-                cond = false;
-            }
-        }
-        
-        return cond;
+        return cond
     }
+    
+    
 
-    const checkBestScore =  () => {
+    
+useEffect(()=> {
+    let cond = checkLoss();
+    if(cond == true) {
+        setScoreCurrent(0);    
         if(scoreCurrent == scoreBest) {
-            setScoreBest(scoreBest + 1);
-        }              
+            setScoreBest(scoreBest - 1);
+        }
+        setClicked([]);
     }
 
-    useEffect(() => {
-        checkBestScore();        
-    },[scoreCurrent]);
+},[scoreCurrent])
 
-    useEffect(() => {                 
-        setScoreCurrent(0);              
-        setClicked([]);         
-    },[isLost]);
-
-    const click = (e) => {        
-        setScoreCurrent(scoreCurrent + 1);
+    const click = (e) => {      
         let val = e.target.parentElement.id;        
         let tempArray = [...clicked];
         tempArray.push(val);
-        setClicked(tempArray);        
-        checkLoss(val); 
-                
-        
+        setClicked(tempArray);     
+        if(scoreCurrent == scoreBest) {
+            setScoreBest(scoreBest + 1);
+        }
+        setScoreCurrent(scoreCurrent + 1);
+        checkLoss();        
         shuffle();        
     }
 

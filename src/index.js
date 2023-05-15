@@ -6,9 +6,9 @@ import App from "./App";
 
 
 createRoot(document.getElementById("App")).render(
-   // <StrictMode>
+   <StrictMode>
         <App />
-    //</StrictMode>
+    </StrictMode>
 )
 
 console.log(demoImg);
