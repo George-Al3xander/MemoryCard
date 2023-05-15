@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import src_demo from "./assets/img_demo.jpg"
 import src_engineer from "./assets/img_engineer.jpg"
 import src_heavy from "./assets/img_heavy.jpg"
@@ -9,11 +9,12 @@ import src_sniper from "./assets/img_sniper.jpg"
 import src_soldier from "./assets/img_soldier.jpg"
 import src_spy from "./assets/img_spy.jpg"
 import Mercs from "./components/Mercs";
+import logo from "./logo.svg"
 
 const App = () => {
     const [scoreCurrent, setScoreCurrent] = useState(0);
-    const [isLost, setIsLost] = useState(false);
     const [scoreBest, setScoreBest] = useState(0);
+    const [isLost, setIsLost] = useState(false);
     const [clicked, setClicked] = useState([]);
     const [array,setArray] = useState([
         {
@@ -70,33 +71,74 @@ const App = () => {
     }
 
     const checkLoss = (value) => {
-        let cond = clicked.every((item) => {
-            return item == value
-        })
-
+        let cond = false;
+        for(let item of clicked) {
+            if(item == value) {
+                setIsLost(true);
+                cond = true;
+            }
+        }
+        
         return cond;
-
     }
 
-    const click = (e) => {
-        let val = e.target.parentElement.id;        
+    const checkPlay = (value) => {
+        console.log(clicked)
+        let cond = true;
+        for(let item of clicked) {
+            if(item != value) {
+                setIsLost(false);
+                cond = false;
+            }
+        }
+        
+        return cond;
+    }
 
+    const checkBestScore =  () => {
+        if(scoreCurrent == scoreBest) {
+            setScoreBest(scoreBest + 1);
+        }              
+    }
+
+    useEffect(() => {
+        checkBestScore();        
+    },[scoreCurrent]);
+
+    useEffect(() => {                 
+        setScoreCurrent(0);              
+        setClicked([]);         
+    },[isLost]);
+
+    const click = (e) => {        
+        setScoreCurrent(scoreCurrent + 1);
+        let val = e.target.parentElement.id;        
         let tempArray = [...clicked];
         tempArray.push(val);
-        setClicked(tempArray);       
-        shuffle();
-        let cond = checkLoss(val);
-        if(cond == false) {
-            console.log("Win");
-        } else {
-            console.log("Loose");
-        }
-        console.lo
+        setClicked(tempArray);        
+        checkLoss(val); 
+                
+        
+        shuffle();        
     }
 
     return(
-        <div>
-            <Mercs onclick={click} array={array}/>
+        <div className="content">
+            <div className="header">
+                <div className="logo">
+                    <img src={logo} alt="logo" />
+                    <h1>Memory Card Game</h1>
+                </div>
+
+                <div id="score">
+                    <p>Current: {scoreCurrent}| Best: {scoreBest}</p>
+                </div>
+            </div>
+
+            <div className="main">
+                 <Mercs onclick={click} array={array}/>
+            </div>
+            
         </div>
     )
 }

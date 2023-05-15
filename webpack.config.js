@@ -23,7 +23,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({            
             template: path.resolve(__dirname,"src/template.html"),
-            // favicon: path.resolve(__dirname, "src/favicon.svg")
+            favicon: path.resolve(__dirname, "src/favicon.svg")
         }),
     ],
     module: {

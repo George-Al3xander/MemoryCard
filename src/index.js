@@ -4,14 +4,11 @@ import { createRoot} from "react-dom/client";
 import React, {StrictMode} from "react";
 import App from "./App";
 
-let img = document.getElementById("test");
-img.src = demoImg;
-
 
 createRoot(document.getElementById("App")).render(
-    <StrictMode>
+   // <StrictMode>
         <App />
-    </StrictMode>
+    //</StrictMode>
 )
 
 console.log(demoImg);

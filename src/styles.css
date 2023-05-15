@@ -39,11 +39,135 @@
 
   :root {
     --ff-default: 'TF2 Build', sans-serif;
+
+    --clr-primary: #9d312f;
+    --clr-accent: #f5e7de;
+    --clr-secondary-dark: #395c78;
+    --clr-secondary-light: #5b7a8c;
                                                 
   }
 
+  
   body {
-    background-color: #9d312f;
     font-family: var(--ff-default);
+    background-color: var(--clr-accent);   
+
+  }
+  
+  .header {
+    display: flex;
+    background-color: var(--clr-primary);
+    width: 100%;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+  #score {
+    font-size: 2rem;
   }
 
+  .logo {
+    display: flex;
+    flex-direction: column;
+    width: min-content;    
+    font-size: 1.3rem;
+    color: white;
+    white-space: nowrap;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.5;
+    margin: 0;
+
+    
+    
+  }
+
+  .logo h1 {
+    padding-inline: 1.5rem;
+  }
+
+  .main {   
+    width: min(80%, 70rem);
+    margin-inline: auto;
+  }
+  
+  .mercs {
+    display: grid;   
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+    "merc1 merc2 merc3"
+    "merc4 merc5 merc6"
+    "merc7 merc8 merc9" 
+    ; 
+    row-gap: 1.5rem;
+    column-gap: 1rem;
+    justify-items: center;
+    margin-block: 1.5rem;
+  }
+
+  .content {
+    width: 100%;
+
+  }
+
+  .merc {
+    padding: 1rem;
+    background-color: var(--clr-secondary-dark);
+    transition: .5s ease all;
+    text-align: center;
+    line-height: 2;
+    width: 10rem;
+    font-size: 1.3rem;
+  }
+
+  .merc img {
+    margin: auto;
+  }
+
+  .merc:hover {
+    opacity: .7;
+    transition: .5s ease all;
+    cursor: pointer;
+    scale: 1.2;
+  }
+
+  .merc_1 {
+    grid-area: merc1;
+  }
+
+  .merc_2 {
+  grid-area: merc2;
+  }
+
+
+  .merc_3 {
+  grid-area: merc3;
+  }
+
+   .merc_4 {
+    grid-area: merc4;
+  }
+
+ .merc_5 {
+    grid-area: merc5;
+  }
+
+ .merc_6 {
+    grid-area: merc6;
+  }
+
+ .merc_7 {
+    grid-area: merc7;
+  }
+
+ .merc_8 {
+    grid-area: merc8;
+  }
+
+ .merc_9 {
+    grid-area: merc9;
+  }
+
+
+  

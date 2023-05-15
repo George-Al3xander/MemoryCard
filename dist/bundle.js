@@ -24,6 +24,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_img_soldier_jpg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./assets/img_soldier.jpg */ "./src/assets/img_soldier.jpg");
 /* harmony import */ var _assets_img_spy_jpg__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./assets/img_spy.jpg */ "./src/assets/img_spy.jpg");
 /* harmony import */ var _components_Mercs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Mercs */ "./src/components/Mercs.js");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -42,11 +47,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var App = function App() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
     _useState2 = _slicedToArray(_useState, 2),
-    clicked = _useState2[0],
-    setClicked = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
+    scoreCurrent = _useState2[0],
+    setScoreCurrent = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    isLost = _useState4[0],
+    setIsLost = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    _useState6 = _slicedToArray(_useState5, 2),
+    scoreBest = _useState6[0],
+    setScoreBest = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+    _useState8 = _slicedToArray(_useState7, 2),
+    clicked = _useState8[0],
+    setClicked = _useState8[1];
+  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
       id: "demo",
       src: _assets_img_demo_jpg__WEBPACK_IMPORTED_MODULE_1__
     }, {
@@ -74,10 +91,56 @@ var App = function App() {
       id: "spy",
       src: _assets_img_spy_jpg__WEBPACK_IMPORTED_MODULE_9__
     }]),
-    _useState4 = _slicedToArray(_useState3, 2),
-    array = _useState4[0],
-    setArray = _useState4[1];
+    _useState10 = _slicedToArray(_useState9, 2),
+    array = _useState10[0],
+    setArray = _useState10[1];
+  var shuffle = function shuffle() {
+    var tempArray = _toConsumableArray(array);
+    var currentIndex = tempArray.length,
+      randomIndex;
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      var _ref = [tempArray[randomIndex], tempArray[currentIndex]];
+      tempArray[currentIndex] = _ref[0];
+      tempArray[randomIndex] = _ref[1];
+    }
+    setArray(tempArray);
+  };
+  var checkLoss = function checkLoss(value) {
+    var cond = false;
+    var _iterator = _createForOfIteratorHelper(clicked),
+      _step;
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var item = _step.value;
+        if (item == value) {
+          cond = true;
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+    return cond;
+  };
+  var click = function click(e) {
+    var val = e.target.parentElement.id;
+    var cond = checkLoss(val);
+    if (cond == false) {
+      console.log("Win");
+      var tempArray = _toConsumableArray(clicked);
+      tempArray.push(val);
+      setClicked(tempArray);
+      shuffle();
+    } else {
+      console.log("Lose");
+    }
+    console.log(clicked);
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Mercs__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    onclick: click,
     array: array
   }));
 };
@@ -103,6 +166,8 @@ var Mercs = function Mercs(props) {
     className: "mercs"
   }, props.array.map(function (item) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      id: item.id,
+      onClick: props.onclick,
       key: item.id
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
       src: item.src,
@@ -133,7 +198,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n\r\n  body {\r\n    background-color: #9d312f;\r\n  }", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA,mEAAmE;;AAEnE,4FAA4F;AAC5F;IACI,UAAU;IACV,eAAe;EACjB;;EAEA,+BAA+B;EAC/B;;;IAGE,sBAAsB;EACxB;;EAEA;;;GAGC;EACD;IACE,gBAAgB;EAClB;;EAEA,wDAAwD;EACxD;IACE,cAAc;IACd,eAAe;EACjB;;EAEA,4CAA4C;EAC5C;IACE,yBAAyB;EAC3B;;EAEA,sEAAsE;EACtE;IACE,mBAAmB;EACrB;;;EAGA;IACE,yBAAyB;EAC3B","sourcesContent":["/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n\r\n  body {\r\n    background-color: #9d312f;\r\n  }"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n  :root {\r\n    --ff-default: 'TF2 Build', sans-serif;\r\n                                                \r\n  }\r\n\r\n  body {\r\n    background-color: #9d312f;\r\n    font-family: var(--ff-default);\r\n  }\r\n\r\n", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA,mEAAmE;;AAEnE,4FAA4F;AAC5F;IACI,UAAU;IACV,eAAe;EACjB;;EAEA,+BAA+B;EAC/B;;;IAGE,sBAAsB;EACxB;;EAEA;;;GAGC;EACD;IACE,gBAAgB;EAClB;;EAEA,wDAAwD;EACxD;IACE,cAAc;IACd,eAAe;EACjB;;EAEA,4CAA4C;EAC5C;IACE,yBAAyB;EAC3B;;EAEA,sEAAsE;EACtE;IACE,mBAAmB;EACrB;;EAEA;IACE,qCAAqC;;EAEvC;;EAEA;IACE,yBAAyB;IACzB,8BAA8B;EAChC","sourcesContent":["/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n  :root {\r\n    --ff-default: 'TF2 Build', sans-serif;\r\n                                                \r\n  }\r\n\r\n  body {\r\n    background-color: #9d312f;\r\n    font-family: var(--ff-default);\r\n  }\r\n\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -34180,8 +34245,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var img = document.getElementById("test");
-img.src = _assets_img_demo_jpg__WEBPACK_IMPORTED_MODULE_1__;
 (0,react_dom_client__WEBPACK_IMPORTED_MODULE_2__.createRoot)(document.getElementById("App")).render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(react__WEBPACK_IMPORTED_MODULE_3__.StrictMode, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default().createElement(_App__WEBPACK_IMPORTED_MODULE_4__["default"], null)));
 console.log(_assets_img_demo_jpg__WEBPACK_IMPORTED_MODULE_1__);
 })();
