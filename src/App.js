@@ -70,8 +70,10 @@ const App = () => {
         setArray(tempArray);
     }
 
-    const checkLoss = () => {
-        let cond = new Set(clicked).size !== clicked.length;
+    const checkLoss = (value) => {
+        let tempArray = clicked;
+        tempArray.push(value);
+        let cond = new Set(tempArray).size !== tempArray.length;
         setIsLost(cond);
 
         return cond
@@ -81,14 +83,7 @@ const App = () => {
 
     
 useEffect(()=> {
-    let cond = checkLoss();
-    if(cond == true) {
-        setScoreCurrent(0);    
-        if(scoreCurrent == scoreBest) {
-            setScoreBest(scoreBest - 1);
-        }
-        setClicked([]);
-    }
+    
 
 },[scoreCurrent])
 
@@ -97,11 +92,16 @@ useEffect(()=> {
         let tempArray = [...clicked];
         tempArray.push(val);
         setClicked(tempArray);     
-        if(scoreCurrent == scoreBest) {
-            setScoreBest(scoreBest + 1);
+        setScoreCurrent(scoreCurrent + 1); 
+        let cond = checkLoss(val);
+        if(cond == true) {
+            setScoreCurrent(0);                
+            setClicked([]);
+        } else {
+            if(scoreCurrent == scoreBest) {
+                    setScoreBest(scoreBest + 1);        
+                }
         }
-        setScoreCurrent(scoreCurrent + 1);
-        checkLoss();        
         shuffle();        
     }
 
