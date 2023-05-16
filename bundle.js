@@ -24,7 +24,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _assets_img_soldier_jpg__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./assets/img_soldier.jpg */ "./src/assets/img_soldier.jpg");
 /* harmony import */ var _assets_img_spy_jpg__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./assets/img_spy.jpg */ "./src/assets/img_spy.jpg");
 /* harmony import */ var _components_Mercs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Mercs */ "./src/components/Mercs.js");
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+/* harmony import */ var _logo_svg__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./logo.svg */ "./src/logo.svg");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
@@ -46,19 +46,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var App = function App() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
     _useState2 = _slicedToArray(_useState, 2),
     scoreCurrent = _useState2[0],
     setScoreCurrent = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
     _useState4 = _slicedToArray(_useState3, 2),
-    isLost = _useState4[0],
-    setIsLost = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+    scoreBest = _useState4[0],
+    setScoreBest = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState6 = _slicedToArray(_useState5, 2),
-    scoreBest = _useState6[0],
-    setScoreBest = _useState6[1];
+    isLost = _useState6[0],
+    setIsLost = _useState6[1];
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
     _useState8 = _slicedToArray(_useState7, 2),
     clicked = _useState8[0],
@@ -108,41 +109,47 @@ var App = function App() {
     setArray(tempArray);
   };
   var checkLoss = function checkLoss(value) {
-    var cond = false;
-    var _iterator = _createForOfIteratorHelper(clicked),
-      _step;
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var item = _step.value;
-        if (item == value) {
-          cond = true;
-        }
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
+    var tempArray = clicked;
+    tempArray.push(value);
+    var cond = new Set(tempArray).size !== tempArray.length;
+    setIsLost(cond);
     return cond;
   };
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {}, [scoreCurrent]);
   var click = function click(e) {
     var val = e.target.parentElement.id;
+    var tempArray = _toConsumableArray(clicked);
+    tempArray.push(val);
+    setClicked(tempArray);
+    setScoreCurrent(scoreCurrent + 1);
     var cond = checkLoss(val);
-    if (cond == false) {
-      console.log("Win");
-      var tempArray = _toConsumableArray(clicked);
-      tempArray.push(val);
-      setClicked(tempArray);
-      shuffle();
+    if (cond == true) {
+      setScoreCurrent(0);
+      setClicked([]);
     } else {
-      console.log("Lose");
+      if (scoreCurrent == scoreBest) {
+        setScoreBest(scoreBest + 1);
+      }
     }
-    console.log(clicked);
+    shuffle();
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Mercs__WEBPACK_IMPORTED_MODULE_10__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "content"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "header"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "logo"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
+    src: _logo_svg__WEBPACK_IMPORTED_MODULE_11__,
+    alt: "logo"
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "Memory Card Game")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    id: "score"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Current: ", scoreCurrent, "| Best: ", scoreBest))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "main"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Mercs__WEBPACK_IMPORTED_MODULE_10__["default"], {
     onclick: click,
     array: array
-  }));
+  })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
 
@@ -166,6 +173,7 @@ var Mercs = function Mercs(props) {
     className: "mercs"
   }, props.array.map(function (item) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "merc merc_".concat(props.array.indexOf(item) + 1),
       id: item.id,
       onClick: props.onclick,
       key: item.id
@@ -198,7 +206,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n  :root {\r\n    --ff-default: 'TF2 Build', sans-serif;\r\n                                                \r\n  }\r\n\r\n  body {\r\n    background-color: #9d312f;\r\n    font-family: var(--ff-default);\r\n  }\r\n\r\n", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA,mEAAmE;;AAEnE,4FAA4F;AAC5F;IACI,UAAU;IACV,eAAe;EACjB;;EAEA,+BAA+B;EAC/B;;;IAGE,sBAAsB;EACxB;;EAEA;;;GAGC;EACD;IACE,gBAAgB;EAClB;;EAEA,wDAAwD;EACxD;IACE,cAAc;IACd,eAAe;EACjB;;EAEA,4CAA4C;EAC5C;IACE,yBAAyB;EAC3B;;EAEA,sEAAsE;EACtE;IACE,mBAAmB;EACrB;;EAEA;IACE,qCAAqC;;EAEvC;;EAEA;IACE,yBAAyB;IACzB,8BAA8B;EAChC","sourcesContent":["/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n  :root {\r\n    --ff-default: 'TF2 Build', sans-serif;\r\n                                                \r\n  }\r\n\r\n  body {\r\n    background-color: #9d312f;\r\n    font-family: var(--ff-default);\r\n  }\r\n\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n  :root {\r\n    --ff-default: 'TF2 Build', sans-serif;\r\n\r\n    --clr-primary: #9d312f;\r\n    --clr-accent: #f5e7de;\r\n    --clr-secondary-dark: #395c78;\r\n    --clr-secondary-light: #5b7a8c;\r\n                                                \r\n  }\r\n\r\n  \r\n  body {\r\n    font-family: var(--ff-default);\r\n    background-color: var(--clr-accent);   \r\n\r\n  }\r\n  \r\n  .header {\r\n    display: flex;\r\n    background-color: var(--clr-primary);\r\n    width: 100%;\r\n    align-items: flex-end;\r\n    justify-content: space-between;\r\n    padding: 1rem;\r\n  }\r\n  #score {\r\n    font-size: 2rem;\r\n  }\r\n\r\n  .logo {\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: min-content;    \r\n    font-size: 1.3rem;\r\n    color: white;\r\n    white-space: nowrap;\r\n    justify-content: center;\r\n    text-align: center;\r\n    line-height: 1.5;\r\n    margin: 0;\r\n\r\n    \r\n    \r\n  }\r\n\r\n  .logo h1 {\r\n    padding-inline: 1.5rem;\r\n  }\r\n\r\n  .main {   \r\n    width: min(80%, 70rem);\r\n    margin-inline: auto;\r\n  }\r\n  \r\n  .mercs {\r\n    display: grid;   \r\n    grid-template-columns: 1fr 1fr 1fr;\r\n    grid-template-rows: 1fr 1fr 1fr;\r\n    grid-template-areas:\r\n    \"merc1 merc2 merc3\"\r\n    \"merc4 merc5 merc6\"\r\n    \"merc7 merc8 merc9\" \r\n    ; \r\n    row-gap: 1.5rem;\r\n    column-gap: 1rem;\r\n    justify-items: center;\r\n    margin-block: 1.5rem;\r\n  }\r\n\r\n  .content {\r\n    width: 100%;\r\n\r\n  }\r\n\r\n  .merc {\r\n    padding: 1rem;\r\n    background-color: var(--clr-secondary-dark);\r\n    transition: .5s ease all;\r\n    text-align: center;\r\n    line-height: 2;\r\n    width: 10rem;\r\n    font-size: 1.3rem;\r\n  }\r\n\r\n  .merc img {\r\n    margin: auto;\r\n  }\r\n\r\n  .merc:hover {\r\n    opacity: .7;\r\n    transition: .5s ease all;\r\n    cursor: pointer;\r\n    scale: 1.2;\r\n  }\r\n\r\n  .merc_1 {\r\n    grid-area: merc1;\r\n  }\r\n\r\n  .merc_2 {\r\n  grid-area: merc2;\r\n  }\r\n\r\n\r\n  .merc_3 {\r\n  grid-area: merc3;\r\n  }\r\n\r\n   .merc_4 {\r\n    grid-area: merc4;\r\n  }\r\n\r\n .merc_5 {\r\n    grid-area: merc5;\r\n  }\r\n\r\n .merc_6 {\r\n    grid-area: merc6;\r\n  }\r\n\r\n .merc_7 {\r\n    grid-area: merc7;\r\n  }\r\n\r\n .merc_8 {\r\n    grid-area: merc8;\r\n  }\r\n\r\n .merc_9 {\r\n    grid-area: merc9;\r\n  }\r\n\r\n\r\n  ", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA,mEAAmE;;AAEnE,4FAA4F;AAC5F;IACI,UAAU;IACV,eAAe;EACjB;;EAEA,+BAA+B;EAC/B;;;IAGE,sBAAsB;EACxB;;EAEA;;;GAGC;EACD;IACE,gBAAgB;EAClB;;EAEA,wDAAwD;EACxD;IACE,cAAc;IACd,eAAe;EACjB;;EAEA,4CAA4C;EAC5C;IACE,yBAAyB;EAC3B;;EAEA,sEAAsE;EACtE;IACE,mBAAmB;EACrB;;EAEA;IACE,qCAAqC;;IAErC,sBAAsB;IACtB,qBAAqB;IACrB,6BAA6B;IAC7B,8BAA8B;;EAEhC;;;EAGA;IACE,8BAA8B;IAC9B,mCAAmC;;EAErC;;EAEA;IACE,aAAa;IACb,oCAAoC;IACpC,WAAW;IACX,qBAAqB;IACrB,8BAA8B;IAC9B,aAAa;EACf;EACA;IACE,eAAe;EACjB;;EAEA;IACE,aAAa;IACb,sBAAsB;IACtB,kBAAkB;IAClB,iBAAiB;IACjB,YAAY;IACZ,mBAAmB;IACnB,uBAAuB;IACvB,kBAAkB;IAClB,gBAAgB;IAChB,SAAS;;;;EAIX;;EAEA;IACE,sBAAsB;EACxB;;EAEA;IACE,sBAAsB;IACtB,mBAAmB;EACrB;;EAEA;IACE,aAAa;IACb,kCAAkC;IAClC,+BAA+B;IAC/B;;;;IAIA;IACA,eAAe;IACf,gBAAgB;IAChB,qBAAqB;IACrB,oBAAoB;EACtB;;EAEA;IACE,WAAW;;EAEb;;EAEA;IACE,aAAa;IACb,2CAA2C;IAC3C,wBAAwB;IACxB,kBAAkB;IAClB,cAAc;IACd,YAAY;IACZ,iBAAiB;EACnB;;EAEA;IACE,YAAY;EACd;;EAEA;IACE,WAAW;IACX,wBAAwB;IACxB,eAAe;IACf,UAAU;EACZ;;EAEA;IACE,gBAAgB;EAClB;;EAEA;EACA,gBAAgB;EAChB;;;EAGA;EACA,gBAAgB;EAChB;;GAEC;IACC,gBAAgB;EAClB;;CAED;IACG,gBAAgB;EAClB;;CAED;IACG,gBAAgB;EAClB;;CAED;IACG,gBAAgB;EAClB;;CAED;IACG,gBAAgB;EAClB;;CAED;IACG,gBAAgB;EAClB","sourcesContent":["/*** The new CSS Reset - version 1.2.0 (last updated 23.7.2021) ***/\r\n\r\n/* Remove all the styles of the \"User-Agent-Stylesheet\", except for the 'display' property */\r\n*:where(:not(iframe, canvas, img, svg, video):not(svg *)) {\r\n    all: unset;\r\n    display: revert;\r\n  }\r\n  \r\n  /* Preferred box-sizing value */\r\n  *,\r\n  *::before,\r\n  *::after {\r\n    box-sizing: border-box;\r\n  }\r\n  \r\n  /*\r\n    Remove list styles (bullets/numbers)\r\n    in case you use it with normalize.css\r\n  */\r\n  ol, ul {\r\n    list-style: none;\r\n  }\r\n  \r\n  /* For images to not be able to exceed their container */\r\n  img {\r\n    display: block;\r\n    max-width: 100%;\r\n  }\r\n  \r\n  /* Removes spacing between cells in tables */\r\n  table {\r\n    border-collapse: collapse;\r\n  }\r\n  \r\n  /* Revert the 'white-space' property for textarea elements on Safari */\r\n  textarea {\r\n    white-space: revert;\r\n  }\r\n\r\n  :root {\r\n    --ff-default: 'TF2 Build', sans-serif;\r\n\r\n    --clr-primary: #9d312f;\r\n    --clr-accent: #f5e7de;\r\n    --clr-secondary-dark: #395c78;\r\n    --clr-secondary-light: #5b7a8c;\r\n                                                \r\n  }\r\n\r\n  \r\n  body {\r\n    font-family: var(--ff-default);\r\n    background-color: var(--clr-accent);   \r\n\r\n  }\r\n  \r\n  .header {\r\n    display: flex;\r\n    background-color: var(--clr-primary);\r\n    width: 100%;\r\n    align-items: flex-end;\r\n    justify-content: space-between;\r\n    padding: 1rem;\r\n  }\r\n  #score {\r\n    font-size: 2rem;\r\n  }\r\n\r\n  .logo {\r\n    display: flex;\r\n    flex-direction: column;\r\n    width: min-content;    \r\n    font-size: 1.3rem;\r\n    color: white;\r\n    white-space: nowrap;\r\n    justify-content: center;\r\n    text-align: center;\r\n    line-height: 1.5;\r\n    margin: 0;\r\n\r\n    \r\n    \r\n  }\r\n\r\n  .logo h1 {\r\n    padding-inline: 1.5rem;\r\n  }\r\n\r\n  .main {   \r\n    width: min(80%, 70rem);\r\n    margin-inline: auto;\r\n  }\r\n  \r\n  .mercs {\r\n    display: grid;   \r\n    grid-template-columns: 1fr 1fr 1fr;\r\n    grid-template-rows: 1fr 1fr 1fr;\r\n    grid-template-areas:\r\n    \"merc1 merc2 merc3\"\r\n    \"merc4 merc5 merc6\"\r\n    \"merc7 merc8 merc9\" \r\n    ; \r\n    row-gap: 1.5rem;\r\n    column-gap: 1rem;\r\n    justify-items: center;\r\n    margin-block: 1.5rem;\r\n  }\r\n\r\n  .content {\r\n    width: 100%;\r\n\r\n  }\r\n\r\n  .merc {\r\n    padding: 1rem;\r\n    background-color: var(--clr-secondary-dark);\r\n    transition: .5s ease all;\r\n    text-align: center;\r\n    line-height: 2;\r\n    width: 10rem;\r\n    font-size: 1.3rem;\r\n  }\r\n\r\n  .merc img {\r\n    margin: auto;\r\n  }\r\n\r\n  .merc:hover {\r\n    opacity: .7;\r\n    transition: .5s ease all;\r\n    cursor: pointer;\r\n    scale: 1.2;\r\n  }\r\n\r\n  .merc_1 {\r\n    grid-area: merc1;\r\n  }\r\n\r\n  .merc_2 {\r\n  grid-area: merc2;\r\n  }\r\n\r\n\r\n  .merc_3 {\r\n  grid-area: merc3;\r\n  }\r\n\r\n   .merc_4 {\r\n    grid-area: merc4;\r\n  }\r\n\r\n .merc_5 {\r\n    grid-area: merc5;\r\n  }\r\n\r\n .merc_6 {\r\n    grid-area: merc6;\r\n  }\r\n\r\n .merc_7 {\r\n    grid-area: merc7;\r\n  }\r\n\r\n .merc_8 {\r\n    grid-area: merc8;\r\n  }\r\n\r\n .merc_9 {\r\n    grid-area: merc9;\r\n  }\r\n\r\n\r\n  "],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -34104,6 +34112,16 @@ module.exports = __webpack_require__.p + "img_soldier.jpg";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "img_spy.jpg";
+
+/***/ }),
+
+/***/ "./src/logo.svg":
+/*!**********************!*\
+  !*** ./src/logo.svg ***!
+  \**********************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "logo.svg";
 
 /***/ })
 
